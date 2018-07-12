@@ -4,7 +4,7 @@ import { Http, Response } from '@angular/http';
 export class ApiProvider {
     readonly host: string;
     constructor(private http: Http) {
-        this.host = 'http://your.host';
+        this.host = '';
     }
 
     private send(url: string, method: string = 'post', data?: any) {
@@ -25,7 +25,7 @@ export class ApiProvider {
         return this.send(url, 'post', data);
     }
 
-    test() {
-        return this.get('');
+    test(id, page) {
+        return this.get(`https://adnmb.com/Api/showf/id/${id}/page/${page}`);
     }
 }   
