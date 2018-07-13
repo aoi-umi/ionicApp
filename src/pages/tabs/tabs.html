@@ -1,3 +1,3 @@
 <ion-tabs #myTabs (ionChange)="doChange($event)">
-  <ion-tab [root]="tabRoot" *ngFor="let p of paramsList" [rootParams]="p" tabTitle="Home" tabIcon="home"></ion-tab>
+  <ion-tab [root]="tabRoot" *ngFor="let p of paramsList" [rootParams]="p" [tabTitle]="p.title" tabIcon="home"></ion-tab>
 </ion-tabs>

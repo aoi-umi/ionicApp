@@ -6,13 +6,13 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { MyApp } from './app.component';
+import { MyApp, MyErrorHandler } from './app.component';
 
 import { ContentPage } from '../pages/content/content';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { ApiProvider } from '../core/Api';
+import { ApiProvider } from '../core/api';
 
 @NgModule({
     declarations: [
@@ -36,7 +36,7 @@ import { ApiProvider } from '../core/Api';
     providers: [
         StatusBar,
         SplashScreen,
-        { provide: ErrorHandler, useClass: IonicErrorHandler },
+        { provide: ErrorHandler, useClass: MyErrorHandler },
         ApiProvider
     ]
 })

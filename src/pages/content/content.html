@@ -4,8 +4,14 @@
         </ion-refresher-content>
     </ion-refresher>
     <ion-list>
-        <ion-item *ngFor="let i of items">{{i}}</ion-item>
+        <button ion-item *ngFor="let i of items">
+            <ion-input *ngIf="i.itemType != 'info';else elseBlock" readonly value="{{i.id}}"></ion-input>
+            <ng-template #elseBlock>                
+                <ion-input readonly text-center value="{{i.msg}}"></ion-input>
+            </ng-template>
+        </button>
     </ion-list>
+    <button ion-item text-center *ngIf="msg" (click)="doInfinite()">{{msg}}</button >
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)" immediate-check="false">
         <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
         </ion-infinite-scroll-content>

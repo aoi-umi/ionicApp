@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, ErrorHandler, Injectable } from '@angular/core';
+import { Platform, ToastController, Toast } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -16,8 +16,26 @@ export class MyApp {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.            
             statusBar.styleDefault();
-            splashScreen.hide();            
+            splashScreen.hide();
         });
+    }
+}
+
+
+@Injectable()
+export class MyErrorHandler implements ErrorHandler {
+    constructor(private toastCtrl: ToastController) {
+    }
+    handleError(err: any): void {
+        console.log(err);
+        this.toastCtrl
+            .create({
+                duration: 3000,
+                position: 'top'
+            })
+            .setMessage(err.message)
+            .present();
+        // do something with the error
     }
 }
 

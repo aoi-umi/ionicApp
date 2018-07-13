@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Menu, Tabs, MenuToggle, NavParams, Button } from 'ionic-angular';
 import { ContentPage } from '../content/content';
+import { IslandConfigModel, islandConfig, IslandsCode } from '../../core/config';
 
 @Component({
     selector: 'page-home',
@@ -15,11 +16,13 @@ export class HomePage implements OnInit {
     pages: Array<PageModel>;
     title: string;
     menuId: any;
+    islandConfig: IslandConfigModel;
     constructor(navParams: NavParams) {
         this.menuId = navParams.data.menuId || '';
+        this.islandConfig = islandConfig[navParams.data.islandCode];
         this.pages = [
-            { component: ContentPage, params: { title: 'Page One' } },
-            { component: ContentPage, params: { title: 'Page Two' } }
+            { component: ContentPage, params: { title: 'Page One', islandCode: this.islandConfig.IslandCode } },
+            { component: ContentPage, params: { title: 'Page Two', islandCode: this.islandConfig.IslandCode } }
         ];
     }
 
@@ -44,7 +47,8 @@ export class HomePage implements OnInit {
 
 type PageModel = {
     params: {
-        title: string
+        title: string,
+        islandCode: string,
     },
     component: any
 };

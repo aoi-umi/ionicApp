@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Tabs, Tab } from 'ionic-angular';
 
+import { IslandsCode } from '../../core/config';
 import { HomePage } from '../home/home';
 
 @Component({
@@ -12,8 +13,8 @@ export class TabsPage {
     paramsList: Array<any>;
     constructor() {
         this.paramsList = [
-            { menuId: 1, title: 1 },
-            { menuId: 2, title: 2 }
+            { menuId: 1, title: 'A', islandCode: IslandsCode.A },
+            { menuId: 2, title: 'B', islandCode: IslandsCode.Beitai }
         ];
     }
 
