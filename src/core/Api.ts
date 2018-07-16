@@ -25,8 +25,13 @@ export class ApiProvider {
         return this.send(url, 'post', data);
     }
 
-    test(islandCode: string, id, page) {
+    threadListGet(islandCode: string, id, page) {
         let config = islandConfig[islandCode];
         return this.get(common.stringFormat(config.GetThreadAPI, config.Host, id, page));
+    }
+
+    replyListGet(islandCode: string, id, page) {
+        let config = islandConfig[islandCode];
+        return this.get(common.stringFormat(config.GetReplyAPI, config.Host, id, page));
     }
 }
