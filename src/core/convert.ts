@@ -1,6 +1,9 @@
 import { IslandsCode, IslandConfig } from '../core/config';
 import * as MyModel from '../model/myModel';
 import * as AModel from '../model/aModel';
+export let threadConvert = function (islandCode: string, data): MyModel.ThreadModel {
+    return replyListConvert(islandCode, data);
+}
 export let replyListConvert = function (islandCode: string, data): MyModel.ReplyListModel {
     let returnData: MyModel.ReplyListModel;
     let islandConfig = IslandConfig[islandCode];

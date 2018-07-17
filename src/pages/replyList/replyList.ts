@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { ApiProvider } from '../../core/api';
-import { MyContentListComponent } from '../../components/my-content-list/my-content-list';
 import * as convert from '../../core/convert';
+import { MyContentListComponent } from '../../components/my-content-list/my-content-list';
 
 @Component({
     selector: 'page-reply-list',
@@ -46,7 +46,7 @@ export class ReplyListPage implements OnInit {
             let returnData: { itemType: string, content: any }[] = [];
             replys.forEach(ele => {
                 returnData.push({ itemType: 'reply', content: ele });
-            })
+            });
             if (self.myContentList.page >= convertData.totalPage) {
                 self.myContentList.infiniteScroll.enabled = false;
                 self.myContentList.msg = '已经没有了';

@@ -59,27 +59,27 @@ export class HomePage implements OnInit {
                 params: { ...defaultParams, title: 'reply' }
             },
             {
-                component: ThreadListPage, type: PageType.mark,
+                component: null, type: PageType.mark,
                 params: { ...defaultParams, title: '收藏' }
             },
             {
-                component: ThreadListPage, type: PageType.myreply,
+                component: null, type: PageType.myreply,
                 params: { ...defaultParams, title: '回复' }
             },
             {
-                component: ThreadListPage, type: PageType.image,
+                component: null, type: PageType.image,
                 params: { ...defaultParams, title: '图片' }
             },
             {
-                component: ThreadListPage, type: PageType.forums,
+                component: null, type: PageType.forums,
                 params: { ...defaultParams, title: '板块' }
             },
             {
-                component: ThreadListPage, type: PageType.gotothread,
+                type: PageType.gotothread,
                 params: { ...defaultParams, title: '跳转' }
             },
             {
-                component: ThreadListPage, type: PageType.setting,
+                component: null, type: PageType.setting,
                 params: { ...defaultParams, title: '设置' }
             },
         ];
