@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Menu, Tabs, MenuToggle, NavParams, Button, AlertController, MenuType } from 'ionic-angular';
 import { ThreadListPage } from '../threadList/threadList';
-import { IslandConfigModel, islandConfig } from '../../core/config';
+import { IslandConfigModel, IslandConfig } from '../../core/config';
 import { ReplyListPage } from '../replyList/replyList';
 
 
@@ -43,7 +43,7 @@ export class HomePage implements OnInit {
     constructor(navParams: NavParams, private alertCtrl: AlertController) {
         let self = this;
         this.menuId = navParams.data.menuId || '';
-        this.islandConfig = islandConfig[navParams.data.islandCode];
+        this.islandConfig = IslandConfig[navParams.data.islandCode];
         let defaultParams = { islandCode: this.islandConfig.IslandCode };
         this.pages = [
             {
@@ -104,19 +104,16 @@ export class HomePage implements OnInit {
     }
 
     doMenuClick(menu, opt?) {
+        this.title = menu.title;
         switch (menu.type) {
             case PageType.gotothread:
                 this.confirmGoToThread();
                 break;
             default:
                 let idx = this.pages.findIndex(ele => ele.type == menu.type);
-                if (menu.type == PageType.reply) {
-                    this.pages[idx].params.threadId = opt.threadId;
-                    this.title = 'No.' + opt.threadId;
-                } else {
-                    this.title = menu.title;
-                }
-                this.tabs.select(idx);
+                this.tabs.select(idx).then(() => {
+                    this.onPageSelected({ type: menu.type, ...opt });
+                });
         }
     }
 
@@ -134,12 +131,29 @@ export class HomePage implements OnInit {
                     let threadId = params.threadId.trim();
                     if (threadId) {
                         let idx = this.pages.findIndex(ele => ele.type == PageType.reply);
-                        this.pages[idx].params.threadId = threadId;
-                        this.tabs.select(idx);
+                        this.tabs.select(idx).then(() => {
+                            this.onPageSelected({ type: PageType.reply, threadId: threadId });
+                        })
                     }
                 }
             }]
         });
         alert.present();
+    }
+
+    private onPageSelected(opt) {
+        let selected = this.tabs.getSelected();
+        if (selected) {
+            let params = selected.rootParams;
+            let page = selected._views[0].instance;
+            if (opt.type == PageType.reply) {
+                this.title = 'No.' + opt.threadId;
+                let p = page as ReplyListPage;
+                if (opt.threadId != p.threadId)
+                    p.refresh(opt.threadId);
+            } else {
+                this.title = params.title;
+            }
+        }
     }
 }

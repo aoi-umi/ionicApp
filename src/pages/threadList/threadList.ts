@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { ApiProvider } from '../../core/api';
 import { MyContentListComponent } from '../../components/my-content-list/my-content-list';
@@ -26,10 +26,11 @@ export class ThreadListPage implements OnInit {
         let self = this;
         this.myContentList.getData = async function () {
             let data = await self.apiProvider.threadListGet(self.islandCode, 4, self.myContentList.page);
-            let pageInfo = { itemType: 'info', msg: this.page };
+            let pageInfo = { itemType: 'info', msg: self.myContentList.page };
+            self.myContentList.page++;
             return [pageInfo, ...data];
         };
-        //this.refresher._beginRefresh();
+        //this.myContentList.refresher._beginRefresh();
     }
 
     doClick(thread) {

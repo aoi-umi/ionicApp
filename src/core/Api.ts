@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { islandConfig } from './config';
+import { IslandConfig } from './config';
 
 import * as common from './common';
 @Injectable()
@@ -26,12 +26,12 @@ export class ApiProvider {
     }
 
     threadListGet(islandCode: string, id, page) {
-        let config = islandConfig[islandCode];
+        let config = IslandConfig[islandCode];
         return this.get(common.stringFormat(config.GetThreadAPI, config.Host, id, page));
     }
 
     replyListGet(islandCode: string, id, page) {
-        let config = islandConfig[islandCode];
+        let config = IslandConfig[islandCode];
         return this.get(common.stringFormat(config.GetReplyAPI, config.Host, id, page));
     }
 }

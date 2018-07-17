@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { ApiProvider } from '../../core/api';
 import { MyContentListComponent } from '../../components/my-content-list/my-content-list';
+import * as convert from '../../core/convert';
 
 @Component({
     selector: 'page-reply-list',
@@ -15,6 +16,7 @@ export class ReplyListPage implements OnInit {
     }
     islandCode: string;
     threadId: string;
+    lastReplyId: string;
     constructor(navParams: NavParams, private apiProvider: ApiProvider) {
         let params = navParams.data;
         this.title = params.title || '';
@@ -26,10 +28,40 @@ export class ReplyListPage implements OnInit {
         let self = this;
         this.myContentList.getData = async function () {
             let data = await self.apiProvider.replyListGet(self.islandCode, self.threadId, self.myContentList.page);
-            data = data.replys;
-            let pageInfo = { itemType: 'info', msg: `${self.myContentList.page}/` };
-            return [pageInfo, ...data];
+            let convertData = convert.replyListConvert(self.islandCode, data);
+            let replys = convertData.replys;
+
+            let addPageInfo = false;
+            if (self.lastReplyId) {
+                let idx = replys.findIndex(ele => ele.id == this.lastReplyId);
+                if (idx >= 0)
+                    replys = replys.splice(idx + 1);
+                else if (replys.length)
+                    addPageInfo = true;
+            } else {
+                addPageInfo = true;
+            }
+            if (replys.length)
+                this.lastReplyId = replys[replys.length - 1].id;
+            let returnData: { itemType: string, content: any }[] = [];
+            replys.forEach(ele => {
+                returnData.push({ itemType: 'reply', content: ele });
+            })
+            if (self.myContentList.page >= convertData.totalPage) {
+                self.myContentList.infiniteScroll.enabled = false;
+                self.myContentList.msg = '已经没有了';
+            }
+            if (addPageInfo) {
+                let pageInfo = { itemType: 'info', content: `${self.myContentList.page}/${convertData.totalPage}` };
+                returnData.unshift(pageInfo);
+                self.myContentList.page++;
+            }
+            return returnData;
         };
+    }
+    refresh(threadId) {
+        threadId && (this.threadId = threadId);
+        this.lastReplyId = '';
         this.myContentList.refresh();
     }
 }

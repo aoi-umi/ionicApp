@@ -13,7 +13,7 @@ export class IslandConfigModel {
     PageSize: number;
     IslandCode: string;
 }
-export let islandConfig: { [key: string]: IslandConfigModel } = {
+export let IslandConfig: { [key: string]: IslandConfigModel } = {
     [IslandsCode.A]: {
         Host: "https://adnmb.com",
         PictureHost: "http://img6.nimingban.com/",
@@ -22,7 +22,7 @@ export let islandConfig: { [key: string]: IslandConfigModel } = {
         GetRefAPI: "{0}/Api/ref?id:{1}",
         PostThreadAPI: "{0}/Home/Forum/doPostThread.html",
         PostReplyAPI: "{0}/Home/Forum/doReplyThread.html",
-        PageSize: 20,
+        PageSize: 19,
         IslandCode: IslandsCode.A,
     },
     [IslandsCode.Beitai]: {

@@ -36,6 +36,8 @@ export class MyContentListComponent {
 
     private async doInfinite() {
         try {
+            if (!this.infiniteScroll.enabled)
+                return;
             await this.loadData();
         } catch (e) {
             this.msg = e.message;
@@ -48,7 +50,6 @@ export class MyContentListComponent {
         this.msg = '';
         let data = this.getData ? await this.getData() : [];
         this.items = [...this.items, ...data];
-        this.page++;
     }
     getData: Function;
     refresh() {
