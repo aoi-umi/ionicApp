@@ -36,7 +36,7 @@ export class MyContentListComponent {
 
     private async doInfinite() {
         try {
-            if (!this.infiniteScroll.enabled)
+            if (this.infiniteScroll.state == 'disabled')
                 return;
             await this.loadData();
         } catch (e) {
