@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Menu, Tabs, MenuToggle, NavParams, Button, AlertController, MenuType } from 'ionic-angular';
+import { Menu, Tabs, MenuToggle, NavParams, Button, AlertController } from 'ionic-angular';
 import { ThreadListPage } from '../threadList/threadList';
 import { IslandConfigModel, IslandConfig } from '../../core/config';
 import { ReplyListPage } from '../replyList/replyList';
@@ -34,12 +34,15 @@ export class HomePage implements OnInit {
     @ViewChild(Menu) menu: Menu;
     @ViewChild(MenuToggle) menuToggle: MenuToggle;
     @ViewChild('menuToggleBtn', { read: Button }) menuToggleBtn: Button;
+    @ViewChild('backBtn', { read: Button }) backBtn: Button;
 
     pages: Array<any>;
     menuList: Array<any>;
     title: string;
     menuId: any;
     islandConfig: IslandConfigModel;
+    currPageType: string;
+    currThreadId: string = '';
     constructor(navParams: NavParams, private alertCtrl: AlertController) {
         let self = this;
         this.menuId = navParams.data.menuId || '';
@@ -93,18 +96,9 @@ export class HomePage implements OnInit {
     ngOnInit() {
         this.tabs.setTabbarHidden(true);
         this.doMenuClick(this.menuList[0]);
-
-        //menu-content-open 这个类会导致列表显示出问题，将其移除
-        let menu = this.menu;
-        menu['_oriAfter'] = menu['_after'];
-        menu['_after'] = function () {
-            this._oriAfter.apply(this, arguments);
-            this._cntEle.classList.remove('menu-content-open');
-        }.bind(menu);
     }
 
     doMenuClick(menu, opt?) {
-        this.title = menu.title;
         switch (menu.type) {
             case PageType.gotothread:
                 this.confirmGoToThread();
@@ -115,6 +109,25 @@ export class HomePage implements OnInit {
                     this.onPageSelected({ type: menu.type, ...opt });
                 });
         }
+    }
+
+    doBackClick() {
+        let backToPage = PageType.home;
+        switch (this.currPageType) {
+            case PageType.home:
+                backToPage = PageType.reply;
+                break;
+        }
+        let menu = this.menuList.find(ele => ele.type == backToPage);
+        let page = this.pages.find(ele => ele.type == backToPage);
+        let params = page.params;
+        switch (this.currPageType) {
+            case PageType.home:
+                menu = { type: PageType.reply };
+                params = { type: PageType.reply, threadId: this.currThreadId };
+                break;
+        }
+        this.doMenuClick(menu, params);
     }
 
     private confirmGoToThread() {
@@ -132,7 +145,7 @@ export class HomePage implements OnInit {
                     if (threadId) {
                         let idx = this.pages.findIndex(ele => ele.type == PageType.reply);
                         this.tabs.select(idx).then(() => {
-                            this.onPageSelected({ type: PageType.reply, threadId: threadId });
+                            this.onPageSelected({ type: PageType.gotothread, threadId: threadId });
                         })
                     }
                 }
@@ -142,17 +155,22 @@ export class HomePage implements OnInit {
     }
 
     private onPageSelected(opt) {
+        let p = this.pages.find(ele => ele.type == opt.type);
+        if (!p || !p.component)
+            throw new Error('未实现');
+
+        this.title = p.params.title;
+        if (opt.threadId)
+            this.currThreadId = opt.threadId;
+        this.currPageType = opt.type;
         let selected = this.tabs.getSelected();
         if (selected) {
-            let params = selected.rootParams;
             let page = selected._views[0].instance;
-            if (opt.type == PageType.reply) {
+            if (opt.type == PageType.gotothread || opt.type == PageType.reply) {
                 this.title = 'No.' + opt.threadId;
                 let p = page as ReplyListPage;
                 if (opt.threadId != p.threadId)
                     p.refresh(opt.threadId);
-            } else {
-                this.title = params.title;
             }
         }
     }

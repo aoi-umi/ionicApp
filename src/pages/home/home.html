@@ -1,3 +1,4 @@
+<!-- <ion-split-pane> -->
 <ion-menu [content]="menuContent" #menu id="{{menuId}}">
     <ion-header>
         <ion-toolbar>
@@ -15,6 +16,11 @@
 </ion-menu>
 <ion-header>
     <ion-navbar>
+        <ion-buttons end>
+            <button ion-button icon-only #backBtn (click)="doBackClick()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
         <button ion-button menuToggle="{{menuId}}" #menuToggleBtn>
             <ion-icon name="menu"></ion-icon>
         </button>
@@ -26,3 +32,4 @@
         <ion-tab *ngFor="let p of pages" [root]="p.component" [rootParams]="p.params"></ion-tab>
     </ion-tabs>
 </div>
+<!-- </ion-split-pane> -->

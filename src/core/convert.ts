@@ -7,6 +7,8 @@ export let threadConvert = function (islandCode: string, data): MyModel.ThreadMo
 export let replyListConvert = function (islandCode: string, data): MyModel.ReplyListModel {
     let returnData: MyModel.ReplyListModel;
     let islandConfig = IslandConfig[islandCode];
+    if (typeof data != 'object')
+        throw new Error(data);
     switch (islandCode) {
         case IslandsCode.A:
         case IslandsCode.Beitai:

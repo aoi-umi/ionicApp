@@ -27,22 +27,26 @@ export class ReplyListPage implements OnInit {
     ngOnInit() {
         let self = this;
         this.myContentList.getData = async function () {
+            if (!self.threadId) {
+                throw new Error('未看过任何串');
+            }
             let data = await self.apiProvider.replyListGet(self.islandCode, self.threadId, self.myContentList.page);
             let convertData = convert.replyListConvert(self.islandCode, data);
             let replys = convertData.replys;
 
-            let addPageInfo = false;
-            if (self.lastReplyId) {
-                let idx = replys.findIndex(ele => ele.id == this.lastReplyId);
-                if (idx >= 0)
-                    replys = replys.splice(idx + 1);
-                else if (replys.length)
-                    addPageInfo = true;
-            } else {
-                addPageInfo = true;
-            }
-            if (replys.length)
-                this.lastReplyId = replys[replys.length - 1].id;
+            let addPageInfo = true;
+            // let addPageInfo = false;
+            // if (self.lastReplyId) {
+            //     let idx = replys.findIndex(ele => ele.id == this.lastReplyId);
+            //     if (idx >= 0)
+            //         replys = replys.splice(idx + 1);
+            //     else if (replys.length)
+            //         addPageInfo = true;
+            // } else {
+            //     addPageInfo = true;
+            // }
+            // if (replys.length)
+            //     this.lastReplyId = replys[replys.length - 1].id;
             let returnData: { itemType: string, content: any }[] = [];
             replys.forEach(ele => {
                 returnData.push({ itemType: 'reply', content: ele });
