@@ -27,8 +27,8 @@
         <ion-title>{{title}}</ion-title>
     </ion-navbar>
 </ion-header>
-<div style="left: 0;right: 0;top: 0;bottom: 0;position: absolute;margin-top: 56px;">
-    <ion-tabs #menuContent>
+<div #menuContent style="left: 0;right: 0;top: 0;bottom: 0;position: absolute;margin-top: 56px;">
+    <ion-tabs>
         <ion-tab *ngFor="let p of pages" [root]="p.component" [rootParams]="p.params"></ion-tab>
     </ion-tabs>
 </div>
