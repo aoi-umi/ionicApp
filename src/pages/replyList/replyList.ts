@@ -2,29 +2,23 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { ApiProvider } from '../../core/api';
 import * as convert from '../../core/convert';
-import { MyContentListComponent } from '../../components/my-content-list/my-content-list';
+import { BaseListPage } from '../../base/BaseListPage';
 
 @Component({
     selector: 'page-reply-list',
     templateUrl: 'replyList.html'
 })
-export class ReplyListPage implements OnInit {
-    @ViewChild(MyContentListComponent) myContentList: MyContentListComponent;
-    title: string;
-    get items() {
-        return this.myContentList ? this.myContentList.items : [];
-    }
-    islandCode: string;
+export class ReplyListPage extends BaseListPage {
     threadId: string;
     lastReplyId: string;
     constructor(navParams: NavParams, private apiProvider: ApiProvider) {
+        super(navParams.data);
         let params = navParams.data;
-        this.title = params.title || '';
         this.threadId = params.threadId;
-        this.islandCode = params.islandCode;
     }
 
     ngOnInit() {
+        super.ngOnInit();
         let self = this;
         this.myContentList.getData = async function () {
             if (!self.threadId) {
@@ -64,7 +58,10 @@ export class ReplyListPage implements OnInit {
         };
     }
     refresh(threadId) {
-        threadId && (this.threadId = threadId);
+        if (threadId) {
+            this.threadId = threadId;
+            this.myContentList.myTitle = `No.${threadId}`;
+        };
         this.lastReplyId = '';
         this.myContentList.refresh();
     }

@@ -32,13 +32,9 @@ let PageType = {
 export class HomePage implements OnInit {
     @ViewChild(Tabs) tabs: Tabs;
     @ViewChild(Menu) menu: Menu;
-    @ViewChild(MenuToggle) menuToggle: MenuToggle;
-    @ViewChild('menuToggleBtn', { read: Button }) menuToggleBtn: Button;
-    @ViewChild('backBtn', { read: Button }) backBtn: Button;
 
     pages: Array<any>;
     menuList: Array<any>;
-    title: string;
     menuId: any;
     islandConfig: IslandConfigModel;
     currPageType: string;
@@ -47,7 +43,10 @@ export class HomePage implements OnInit {
         let self = this;
         this.menuId = navParams.data.menuId || '';
         this.islandConfig = IslandConfig[navParams.data.islandCode];
-        let defaultParams = { islandCode: this.islandConfig.IslandCode };
+        let defaultParams = {
+            islandCode: this.islandConfig.IslandCode,
+            onBackClick: this.doBackClick.bind(this),
+        };
         this.pages = [
             {
                 component: ThreadListPage, type: PageType.home,
@@ -104,30 +103,37 @@ export class HomePage implements OnInit {
                 this.confirmGoToThread();
                 break;
             default:
-                let idx = this.pages.findIndex(ele => ele.type == menu.type);
+                let params: any = {
+                    type: menu.type,
+                };
+                if (this.currPageType == PageType.reply && menu.type == PageType.home) {
+                    params.type = PageType.reply;
+                    params.threadId = this.currThreadId;
+                } else {
+                    params = { ...params, ...opt };
+                }
+                let idx = this.pages.findIndex(ele => ele.type == params.type);
                 this.tabs.select(idx).then(() => {
-                    this.onPageSelected({ type: menu.type, ...opt });
+                    this.onPageSelected(params);
                 });
         }
     }
 
     doBackClick() {
         let backToPage = PageType.home;
+        let params: any = {};
         switch (this.currPageType) {
             case PageType.home:
                 backToPage = PageType.reply;
+                params.threadId = this.currThreadId;
                 break;
         }
-        let menu = this.menuList.find(ele => ele.type == backToPage);
-        let page = this.pages.find(ele => ele.type == backToPage);
-        let params = page.params;
-        switch (this.currPageType) {
-            case PageType.home:
-                menu = { type: PageType.reply };
-                params = { type: PageType.reply, threadId: this.currThreadId };
-                break;
-        }
-        this.doMenuClick(menu, params);
+        params.type = backToPage;
+
+        let idx = this.pages.findIndex(ele => ele.type == params.type);
+        this.tabs.select(idx).then(() => {
+            this.onPageSelected(params);
+        });
     }
 
     private confirmGoToThread() {
@@ -145,7 +151,7 @@ export class HomePage implements OnInit {
                     if (threadId) {
                         let idx = this.pages.findIndex(ele => ele.type == PageType.reply);
                         this.tabs.select(idx).then(() => {
-                            this.onPageSelected({ type: PageType.gotothread, threadId: threadId });
+                            this.onPageSelected({ type: PageType.reply, threadId: threadId });
                         })
                     }
                 }
@@ -159,15 +165,13 @@ export class HomePage implements OnInit {
         if (!p || !p.component)
             throw new Error('未实现');
 
-        this.title = p.params.title;
         if (opt.threadId)
             this.currThreadId = opt.threadId;
         this.currPageType = opt.type;
         let selected = this.tabs.getSelected();
         if (selected) {
             let page = selected._views[0].instance;
-            if (opt.type == PageType.gotothread || opt.type == PageType.reply) {
-                this.title = 'No.' + opt.threadId;
+            if (opt.type == PageType.reply) {
                 let p = page as ReplyListPage;
                 if (opt.threadId != p.threadId)
                     p.refresh(opt.threadId);

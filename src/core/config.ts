@@ -15,8 +15,8 @@ export class IslandConfigModel {
 }
 export let IslandConfig: { [key: string]: IslandConfigModel } = {
     [IslandsCode.A]: {
-        Host: "https://adnmb.com",
-        PictureHost: "http://img6.nimingban.com/",
+        Host: "//adnmb.com",
+        PictureHost: "//img6.nimingban.com/",
         GetThreadAPI: "{0}/Api/showf/id/{1}/page/{2}",
         GetReplyAPI: "{0}/Api/thread/id/{1}/page/{2}",
         GetRefAPI: "{0}/Api/ref?id:{1}",
@@ -26,8 +26,8 @@ export let IslandConfig: { [key: string]: IslandConfigModel } = {
         IslandCode: IslandsCode.A,
     },
     [IslandsCode.Beitai]: {
-        Host: "https://tnmb.org",
-        PictureHost: "https://tnmbstatic.fastmirror.org/Public/Upload/",
+        Host: "//tnmb.org",
+        PictureHost: "//tnmbstatic.fastmirror.org/Public/Upload/",
         GetThreadAPI: "{0}/Api/showf/id/{1}/page/{2}",
         GetReplyAPI: "{0}/Api/thread/id/{1}/page/{2}",
         GetRefAPI: "{0}/Api/ref?id:{1}",

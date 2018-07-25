@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Output, Input, EventEmitter, ViewChild } from '@angular/core';
+import { Button } from 'ionic-angular';
 
 /**
  * Generated class for the MyContentComponent component.
@@ -7,10 +8,16 @@ import { Component } from '@angular/core';
  * Components.
  */
 @Component({
-  selector: 'my-content',
-  templateUrl: 'my-content.html'
+    selector: 'my-content',
+    templateUrl: 'my-content.html'
 })
 export class MyContentComponent {
-  constructor() {
-  }
+    @Input() myTitle: string;
+    @Output() onBackClick = new EventEmitter();
+    constructor() {
+    }
+
+    doBackClick() {
+        this.onBackClick.emit();
+    }
 }

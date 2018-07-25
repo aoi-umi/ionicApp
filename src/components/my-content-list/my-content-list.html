@@ -1,14 +1,16 @@
-<ion-content>
-    <ion-refresher (ionRefresh)="doRefresh($event)" #refresher>
-        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
-        </ion-refresher-content>
-    </ion-refresher>
-    <ion-list>
-        <ng-content></ng-content>
-    </ion-list>
-    <button ion-item text-center *ngIf="msg" (click)="doInfinite()">{{msg}}</button>
-    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" immediate-check="false">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-</ion-content>
+<my-content myTitle="{{myTitle}}">
+    <ion-content>
+        <ion-refresher (ionRefresh)="doRefresh($event)" #refresher>
+            <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+            </ion-refresher-content>
+        </ion-refresher>
+        <ion-list>
+            <ng-content></ng-content>
+        </ion-list>
+        <button ion-item text-center *ngIf="msg" (click)="doInfinite()">{{msg}}</button>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" immediate-check="false">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </ion-content>
+</my-content>

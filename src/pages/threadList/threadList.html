@@ -1,4 +1,4 @@
-<my-content-list>
+<my-content-list myTitle="{{title}}">
     <button ion-item *ngFor="let i of items" [ngSwitch]="i.itemType">
         <ion-input *ngSwitchCase="'info'" readonly text-center value="{{i.content}}"></ion-input>
         <ion-input *ngSwitchDefault readonly value="{{i.content.id}}" (click)="doClick(i.content)"></ion-input>

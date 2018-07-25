@@ -1,6 +1,7 @@
 
-import { Component, ViewChild, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { Refresher, InfiniteScroll } from 'ionic-angular';
+import { MyContentComponent } from '../my-content/my-content';
 
 /**
  * Generated class for the MyContentListComponent component.
@@ -13,8 +14,10 @@ import { Refresher, InfiniteScroll } from 'ionic-angular';
     templateUrl: 'my-content-list.html'
 })
 export class MyContentListComponent {
+    @Input() myTitle: string;
     @ViewChild(Refresher) refresher: Refresher;
     @ViewChild(InfiniteScroll) infiniteScroll: InfiniteScroll;
+    @ViewChild(MyContentComponent) myContent: MyContentComponent;
     items = [];
     page = 1;
     msg: string;

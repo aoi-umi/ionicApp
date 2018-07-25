@@ -14,20 +14,7 @@
         </ion-list>
     </ion-content>
 </ion-menu>
-<ion-header>
-    <ion-navbar>
-        <ion-buttons end>
-            <button ion-button icon-only #backBtn (click)="doBackClick()">
-                <ion-icon name="arrow-back"></ion-icon>
-            </button>
-        </ion-buttons>
-        <button ion-button menuToggle="{{menuId}}" #menuToggleBtn>
-            <ion-icon name="menu"></ion-icon>
-        </button>
-        <ion-title>{{title}}</ion-title>
-    </ion-navbar>
-</ion-header>
-<div #menuContent style="left: 0;right: 0;top: 0;bottom: 0;position: absolute;margin-top: 56px;">
+<div #menuContent style="left: 0;right: 0;top: 0;bottom: 0;position: absolute;">
     <ion-tabs>
         <ion-tab *ngFor="let p of pages" [root]="p.component" [rootParams]="p.params"></ion-tab>
     </ion-tabs>
