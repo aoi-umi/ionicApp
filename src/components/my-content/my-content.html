@@ -5,10 +5,17 @@
         </button>
         <ion-title>{{myTitle}}</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="doBackClick()">
-                <ion-icon name="arrow-back"></ion-icon>
-            </button>
+            <ng-content select=".headerBtn"></ng-content>            
         </ion-buttons>
     </ion-navbar>
 </ion-header>
 <ng-content></ng-content>
+<ion-footer no-border>
+    <ion-toolbar>
+        <ion-buttons>
+            <button ion-button icon-only (click)="doBackClick()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

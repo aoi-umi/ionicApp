@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { CommonProvider } from '../core/common';
 
 @Component({
     templateUrl: 'app.html'
@@ -12,7 +13,6 @@ export class MyApp {
     rootPage: any = TabsPage;
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
-        
         //menu-content-open 这个类会导致列表显示出问题，将其移除
         Menu.prototype['_oriAfter'] = Menu.prototype['_after'];
         Menu.prototype['_after'] = function () {
@@ -32,7 +32,7 @@ export class MyApp {
 
 @Injectable()
 export class MyErrorHandler implements ErrorHandler {
-    constructor(private toastCtrl: ToastController) {
+    constructor(private common: CommonProvider) {
 
     }
     handleError(err: any): void {
@@ -41,13 +41,7 @@ export class MyErrorHandler implements ErrorHandler {
         message = err.message;
         if (err['rejection'])
             message = err['rejection'].message;
-        this.toastCtrl
-            .create({
-                message: message,
-                duration: 3000,
-                position: 'top'
-            })
-            .present();
+        this.common.showMsg(message);
     }
 }
 

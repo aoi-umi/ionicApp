@@ -28,19 +28,6 @@ export class ReplyListPage extends BaseListPage {
             let convertData = convert.replyListConvert(self.islandCode, data);
             let replys = convertData.replys;
 
-            let addPageInfo = true;
-            // let addPageInfo = false;
-            // if (self.lastReplyId) {
-            //     let idx = replys.findIndex(ele => ele.id == this.lastReplyId);
-            //     if (idx >= 0)
-            //         replys = replys.splice(idx + 1);
-            //     else if (replys.length)
-            //         addPageInfo = true;
-            // } else {
-            //     addPageInfo = true;
-            // }
-            // if (replys.length)
-            //     this.lastReplyId = replys[replys.length - 1].id;
             let returnData: { itemType: string, content: any }[] = [];
             replys.forEach(ele => {
                 returnData.push({ itemType: 'reply', content: ele });
@@ -49,11 +36,12 @@ export class ReplyListPage extends BaseListPage {
                 self.myContentList.infiniteScroll.enabled = false;
                 self.myContentList.msg = '已经没有了';
             }
-            if (addPageInfo) {
-                let pageInfo = { itemType: 'info', content: `${self.myContentList.page}/${convertData.totalPage}` };
-                returnData.unshift(pageInfo);
-                self.myContentList.page++;
-            }
+            let pageInfo = { itemType: 'info', content: `${self.myContentList.page}/${convertData.totalPage}` };
+            returnData.unshift(pageInfo);
+            self.myContentList.page++;
+
+            if (!self.items.length)
+                returnData.unshift({ itemType: 'thread', content: convertData });
             return returnData;
         };
     }
@@ -64,5 +52,9 @@ export class ReplyListPage extends BaseListPage {
         };
         this.lastReplyId = '';
         this.myContentList.refresh();
+    }
+    doMarkClick() {
+        if (!this.items.length)
+            throw new Error('无法收藏');
     }
 }

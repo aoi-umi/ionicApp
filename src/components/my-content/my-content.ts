@@ -1,5 +1,4 @@
-import { Component, Output, Input, EventEmitter, ViewChild } from '@angular/core';
-import { Button } from 'ionic-angular';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
 
 /**
  * Generated class for the MyContentComponent component.

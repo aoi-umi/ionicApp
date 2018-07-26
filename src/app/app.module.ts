@@ -16,6 +16,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { ApiProvider } from '../core/api';
 import { ComponentsModule } from '../components/components.module';
 import { ReplyListPage } from '../pages/replyList/replyList';
+import { CommonProvider } from '../core/common';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { ReplyListPage } from '../pages/replyList/replyList';
         StatusBar,
         SplashScreen,
         { provide: ErrorHandler, useClass: MyErrorHandler },
-        ApiProvider
+        ApiProvider,
+        CommonProvider
     ]
 })
 export class AppModule { }
