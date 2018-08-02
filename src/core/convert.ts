@@ -30,6 +30,7 @@ export let replyListConvert = function (islandCode: string, data): MyModel.Reply
                 ele.admin = ele.admin as any != '0';
                 ele.sage = ele.sage as any != '0';
             });
+            returnData.islandCode = islandCode;
             break;
     }
     return returnData;

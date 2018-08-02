@@ -1,8 +1,10 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Menu, Tabs, MenuToggle, NavParams, Button, AlertController } from 'ionic-angular';
-import { ThreadListPage } from '../threadList/threadList';
+import { Menu, Tabs, NavParams, AlertController } from 'ionic-angular';
 import { IslandConfigModel, IslandConfig } from '../../core/config';
+import { ThreadListPage } from '../threadList/threadList';
 import { ReplyListPage } from '../replyList/replyList';
+import { MarkListPage } from '../markList/markList';
+import { ThreadModel } from '../../model/myModel';
 
 
 type PageModel = {
@@ -37,6 +39,7 @@ export class HomePage implements OnInit {
     menuList: Array<any>;
     menuId: any;
     islandConfig: IslandConfigModel;
+    lastPageType: string;
     currPageType: string;
     currThreadId: string = '';
     constructor(navParams: NavParams, private alertCtrl: AlertController) {
@@ -51,7 +54,7 @@ export class HomePage implements OnInit {
             {
                 component: ThreadListPage, type: PageType.home,
                 params: {
-                    ...defaultParams, title: 'Home', onChildClick: function (thread) {
+                    ...defaultParams, title: 'Home', onChildClick: function (thread: ThreadModel) {
                         self.doMenuClick({ type: PageType.reply }, { threadId: thread.id });
                     }
                 }
@@ -61,8 +64,12 @@ export class HomePage implements OnInit {
                 params: { ...defaultParams, title: 'reply' }
             },
             {
-                component: null, type: PageType.mark,
-                params: { ...defaultParams, title: '收藏' }
+                component: MarkListPage, type: PageType.mark,
+                params: {
+                    ...defaultParams, title: '收藏', onChildClick: function (thread: ThreadModel) {
+                        self.doMenuClick({ type: PageType.reply }, { threadId: thread.id });
+                    }
+                }
             },
             {
                 component: null, type: PageType.myreply,
@@ -122,11 +129,9 @@ export class HomePage implements OnInit {
     doBackClick() {
         let backToPage = PageType.home;
         let params: any = {};
-        switch (this.currPageType) {
-            case PageType.home:
-                backToPage = PageType.reply;
-                params.threadId = this.currThreadId;
-                break;
+        if (this.currPageType == PageType.home || this.lastPageType == PageType.reply) {
+            backToPage = PageType.reply;
+            params.threadId = this.currThreadId;
         }
         params.type = backToPage;
 
@@ -167,6 +172,7 @@ export class HomePage implements OnInit {
 
         if (opt.threadId)
             this.currThreadId = opt.threadId;
+        this.lastPageType = this.currPageType;
         this.currPageType = opt.type;
         let selected = this.tabs.getSelected();
         if (selected) {

@@ -1,7 +1,6 @@
 <my-content-list myTitle="{{title}}">
-    <button class="headerBtn" ion-button="bar-button" icon-only  (click)="doMarkClick()">
-        <!-- *ngIf="threadId" -->
-        <ion-icon name="star-outline"></ion-icon>
+    <button class="headerBtn" ion-button="bar-button" *ngIf="threadId" icon-only (click)="doMarkClick()">
+        <ion-icon name="{{mark ? 'star':'star-outline'}}"></ion-icon>
     </button>
     <button ion-item *ngFor="let i of items" [ngSwitch]="i.itemType">
         <ion-input *ngSwitchCase="'info'" readonly text-center value="{{i.content}}"></ion-input>

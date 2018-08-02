@@ -1,3 +1,4 @@
+
 class BaseContentModel {
     id: string;
     img: string;
@@ -12,6 +13,8 @@ class BaseContentModel {
     admin: boolean;
 }
 export class ThreadModel extends BaseContentModel {
+    _id: string;
+    islandCode: string;
     remainReplys: number;
     replyCount: number;
     replys: ReplyModel[];

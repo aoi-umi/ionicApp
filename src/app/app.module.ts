@@ -9,14 +9,17 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { MyApp, MyErrorHandler } from './app.component';
 
+import { ApiProvider } from '../core/api';
+import { CommonProvider } from '../core/common';
+import { DatabaseProvider } from '../core/db';
+
+import { ComponentsModule } from '../components/components.module';
+
 import { ThreadListPage } from '../pages/threadList/threadList';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-
-import { ApiProvider } from '../core/api';
-import { ComponentsModule } from '../components/components.module';
 import { ReplyListPage } from '../pages/replyList/replyList';
-import { CommonProvider } from '../core/common';
+import { MarkListPage } from '../pages/markList/markList';
 
 @NgModule({
     declarations: [
@@ -25,6 +28,7 @@ import { CommonProvider } from '../core/common';
         TabsPage,
         ThreadListPage,
         ReplyListPage,
+        MarkListPage,
     ],
     imports: [
         BrowserModule,
@@ -39,13 +43,15 @@ import { CommonProvider } from '../core/common';
         TabsPage,
         ThreadListPage,
         ReplyListPage,
+        MarkListPage,
     ],
     providers: [
         StatusBar,
         SplashScreen,
         { provide: ErrorHandler, useClass: MyErrorHandler },
         ApiProvider,
-        CommonProvider
+        CommonProvider,
+        DatabaseProvider,
     ]
 })
 export class AppModule { }

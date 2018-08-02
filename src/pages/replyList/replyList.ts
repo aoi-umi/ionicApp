@@ -1,8 +1,10 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { ApiProvider } from '../../core/api';
 import * as convert from '../../core/convert';
 import { BaseListPage } from '../../base/BaseListPage';
+import { DatabaseProvider } from '../../core/db';
+import { ThreadModel } from '../../model/myModel';
 
 @Component({
     selector: 'page-reply-list',
@@ -11,7 +13,9 @@ import { BaseListPage } from '../../base/BaseListPage';
 export class ReplyListPage extends BaseListPage {
     threadId: string;
     lastReplyId: string;
-    constructor(navParams: NavParams, private apiProvider: ApiProvider) {
+    mark: boolean;
+    thread: ThreadModel;
+    constructor(navParams: NavParams, private apiProvider: ApiProvider, private db: DatabaseProvider) {
         super(navParams.data);
         let params = navParams.data;
         this.threadId = params.threadId;
@@ -27,6 +31,10 @@ export class ReplyListPage extends BaseListPage {
             let data = await self.apiProvider.replyListGet(self.islandCode, self.threadId, self.myContentList.page);
             let convertData = convert.replyListConvert(self.islandCode, data);
             let replys = convertData.replys;
+            delete convertData.replys;
+            if (!self.thread || self.threadId != convertData.id) {
+                self.thread = convertData;
+            }
 
             let returnData: { itemType: string, content: any }[] = [];
             replys.forEach(ele => {
@@ -47,6 +55,12 @@ export class ReplyListPage extends BaseListPage {
     }
     refresh(threadId) {
         if (threadId) {
+            if (this.threadId != threadId) {
+                this.thread = this.db.markModel.getData((ele) => {
+                    return ele.islandCode == this.islandCode && ele.id == threadId
+                })[0];
+                this.mark = !!this.thread;
+            }
             this.threadId = threadId;
             this.myContentList.myTitle = `No.${threadId}`;
         };
@@ -54,7 +68,15 @@ export class ReplyListPage extends BaseListPage {
         this.myContentList.refresh();
     }
     doMarkClick() {
-        if (!this.items.length)
+        if (!this.threadId)
             throw new Error('无法收藏');
+        if (!this.mark) {
+            let result = this.db.markModel.setData(this.thread);
+            if (result)
+                this.mark = true;
+        } else {
+            this.db.markModel.removeData(this.thread._id);
+            this.mark = false;
+        }
     }
 }

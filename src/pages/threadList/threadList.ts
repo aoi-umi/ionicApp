@@ -9,12 +9,10 @@ import { BaseListPage } from '../../base/BaseListPage';
     templateUrl: 'threadList.html'
 })
 export class ThreadListPage extends BaseListPage {
-    private onChildClick: Function;
 
     constructor(navParams: NavParams, private apiProvider: ApiProvider) {
         super(navParams.data);
-        let params = navParams.data
-        this.onChildClick = params.onChildClick;
+        let params = navParams.data;
     }
 
     ngOnInit() {

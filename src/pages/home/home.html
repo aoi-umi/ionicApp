@@ -1,4 +1,3 @@
-<!-- <ion-split-pane> -->
 <ion-menu [content]="menuContent" #menu id="{{menuId}}">
     <ion-header>
         <ion-toolbar>
@@ -19,4 +18,3 @@
         <ion-tab *ngFor="let p of pages" [root]="p.component" [rootParams]="p.params"></ion-tab>
     </ion-tabs>
 </div>
-<!-- </ion-split-pane> -->
