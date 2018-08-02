@@ -39,9 +39,9 @@ export class HomePage implements OnInit {
     menuList: Array<any>;
     menuId: any;
     islandConfig: IslandConfigModel;
-    lastPageType: string;
     currPageType: string;
     currThreadId: string = '';
+    isHome = true;
     constructor(navParams: NavParams, private alertCtrl: AlertController) {
         let self = this;
         this.menuId = navParams.data.menuId || '';
@@ -129,7 +129,7 @@ export class HomePage implements OnInit {
     doBackClick() {
         let backToPage = PageType.home;
         let params: any = {};
-        if (this.currPageType == PageType.home || this.lastPageType == PageType.reply) {
+        if (this.isHome && this.currPageType == PageType.home) {
             backToPage = PageType.reply;
             params.threadId = this.currThreadId;
         }
@@ -172,8 +172,11 @@ export class HomePage implements OnInit {
 
         if (opt.threadId)
             this.currThreadId = opt.threadId;
-        this.lastPageType = this.currPageType;
         this.currPageType = opt.type;
+        if (this.currPageType == PageType.home)
+            this.isHome = true;
+        else if (this.currPageType == PageType.reply)
+            this.isHome = false;
         let selected = this.tabs.getSelected();
         if (selected) {
             let page = selected._views[0].instance;

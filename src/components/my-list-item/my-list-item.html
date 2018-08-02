@@ -1,0 +1,5 @@
+<button ion-item no-lines [ngSwitch]="model.itemType">
+    <ion-input *ngSwitchCase="'info'" readonly text-center value="{{model.content}}"></ion-input>
+    <ion-input *ngSwitchCase="'reply'" readonly value="{{model.content.id}}"></ion-input>
+    <ion-input *ngSwitchDefault readonly value="{{model.content.id}}" (click)="doClick(model.content)"></ion-input>
+</button>
