@@ -1,0 +1,20 @@
+<my-content myTitle="{{title}}">
+    <ion-toolbar no-border-top class="headerBottom">
+        <ion-searchbar [(ngModel)]="searchText" [showCancelButton]="true" (ionInput)="onSearchInput($event)" (ionCancel)="onSearchCancel($event)">
+        </ion-searchbar>
+    </ion-toolbar>
+    <ion-content>
+        <ion-list>
+            <ng-container *ngFor="let g of list">
+                <ion-list-header>
+                    {{g.GroupName}}
+                </ion-list-header>
+                <ion-item-group reorder="false">
+                    <button ion-item no-lines *ngFor="let m of g.Models" (click)=doForumClick(m)>
+                        {{m.forumName}}
+                    </button>
+                </ion-item-group>
+            </ng-container>
+        </ion-list>
+    </ion-content>
+</my-content>

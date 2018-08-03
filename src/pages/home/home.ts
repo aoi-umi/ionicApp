@@ -5,6 +5,7 @@ import { ThreadListPage } from '../threadList/threadList';
 import { ReplyListPage } from '../replyList/replyList';
 import { MarkListPage } from '../markList/markList';
 import { ThreadModel } from '../../model/myModel';
+import { ForumListPage } from '../forum-list/forum-list';
 
 
 type PageModel = {
@@ -80,7 +81,7 @@ export class HomePage implements OnInit {
                 params: { ...defaultParams, title: '图片' }
             },
             {
-                component: null, type: PageType.forums,
+                component: ForumListPage, type: PageType.forums,
                 params: { ...defaultParams, title: '板块' }
             },
             {

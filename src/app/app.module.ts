@@ -20,6 +20,7 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ReplyListPage } from '../pages/replyList/replyList';
 import { MarkListPage } from '../pages/markList/markList';
+import { ForumListPage } from '../pages/forum-list/forum-list';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { MarkListPage } from '../pages/markList/markList';
         ThreadListPage,
         ReplyListPage,
         MarkListPage,
+        ForumListPage,
     ],
     imports: [
         BrowserModule,
@@ -44,6 +46,7 @@ import { MarkListPage } from '../pages/markList/markList';
         ThreadListPage,
         ReplyListPage,
         MarkListPage,
+        ForumListPage,
     ],
     providers: [
         StatusBar,
