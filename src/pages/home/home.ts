@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Menu, Tabs, NavParams, AlertController } from 'ionic-angular';
-import { IslandConfigModel, IslandConfig } from '../../core/config';
+import { IslandConfigModel, IslandConfig, ForumModel } from '../../core/config';
 import { ThreadListPage } from '../threadList/threadList';
 import { ReplyListPage } from '../replyList/replyList';
 import { MarkListPage } from '../markList/markList';
@@ -43,21 +43,25 @@ export class HomePage implements OnInit {
     currPageType: string;
     currThreadId: string = '';
     isHome = true;
+    currForum: ForumModel;
     constructor(navParams: NavParams, private alertCtrl: AlertController) {
         let self = this;
-        this.menuId = navParams.data.menuId || '';
-        this.islandConfig = IslandConfig[navParams.data.islandCode];
+        let data = navParams.data;
+        this.menuId = data.menuId || '';
+        this.islandConfig = IslandConfig[data.islandCode];
         let defaultParams = {
             islandCode: this.islandConfig.IslandCode,
             onBackClick: this.doBackClick.bind(this),
         };
+        this.currForum = IslandConfig[this.islandConfig.IslandCode].Groups[0].Models[0];
         this.pages = [
             {
                 component: ThreadListPage, type: PageType.home,
                 params: {
                     ...defaultParams, title: 'Home', onChildClick: function (thread: ThreadModel) {
                         self.doMenuClick({ type: PageType.reply }, { threadId: thread.id });
-                    }
+                    },
+                    forum: this.currForum
                 }
             },
             {
@@ -82,7 +86,11 @@ export class HomePage implements OnInit {
             },
             {
                 component: ForumListPage, type: PageType.forums,
-                params: { ...defaultParams, title: '板块' }
+                params: {
+                    ...defaultParams, title: '板块', onForumClick: function (forum: ForumModel) {
+                        self.doMenuClick({ type: PageType.home }, { forum: forum });
+                    }
+                }
             },
             {
                 type: PageType.gotothread,
@@ -117,9 +125,9 @@ export class HomePage implements OnInit {
                 if (this.currPageType == PageType.reply && menu.type == PageType.home) {
                     params.type = PageType.reply;
                     params.threadId = this.currThreadId;
-                } else {
-                    params = { ...params, ...opt };
                 }
+                params = { ...params, ...opt };
+
                 let idx = this.pages.findIndex(ele => ele.type == params.type);
                 this.tabs.select(idx).then(() => {
                     this.onPageSelected(params);
@@ -181,7 +189,11 @@ export class HomePage implements OnInit {
         let selected = this.tabs.getSelected();
         if (selected) {
             let page = selected._views[0].instance;
-            if (opt.type == PageType.reply) {
+            if (opt.type == PageType.home) {
+                let p = page as ThreadListPage;
+                p.setForum(opt.forum);
+            }
+            else if (opt.type == PageType.reply) {
                 let p = page as ReplyListPage;
                 if (opt.threadId != p.threadId)
                     p.refresh(opt.threadId);

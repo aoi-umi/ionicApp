@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { BaseListPage } from '../../base/BaseListPage';
 import { DatabaseProvider } from '../../core/db';
+import { fixConvert } from '../../core/convert';
 
 @Component({
     selector: 'page-mark-list',
@@ -15,12 +16,13 @@ export class MarkListPage extends BaseListPage {
     ngOnInit() {
         super.ngOnInit();
         let self = this;
-        self.myContentList.infiniteScroll.enabled = false;
         this.myContentList.getData = async function () {
             let list = self.db.markModel.getData((ele) => ele.islandCode == self.islandCode);
             let returnData = list.map(ele => {
+                fixConvert(self.islandCode, ele);
                 return { itemType: 'thread', content: ele };
             });
+            self.myContentList.infiniteScroll.enabled = false;
             return returnData;
         };
         self.refresh();

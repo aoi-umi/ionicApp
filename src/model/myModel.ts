@@ -1,5 +1,5 @@
 
-class BaseContentModel {
+export class BaseContentModel {
     id: string;
     img: string;
     ext: string;
@@ -11,6 +11,9 @@ class BaseContentModel {
     content: string;
     sage: boolean;
     admin: boolean;
+
+    imagePath: string;
+    imageThumbPath: string;
 }
 export class ThreadModel extends BaseContentModel {
     _id: string;

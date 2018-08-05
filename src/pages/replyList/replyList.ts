@@ -29,7 +29,7 @@ export class ReplyListPage extends BaseListPage {
                 throw new Error('未看过任何串');
             }
             let data = await self.apiProvider.replyListGet(self.islandCode, self.threadId, self.myContentList.page);
-            let convertData = convert.replyListConvert(self.islandCode, data);
+            let convertData = convert.replyConvert(self.islandCode, data);
             let replys = convertData.replys;
             delete convertData.replys;
             if (!self.thread || self.threadId != convertData.id) {
@@ -62,7 +62,7 @@ export class ReplyListPage extends BaseListPage {
                 this.mark = !!this.thread;
             }
             this.threadId = threadId;
-            this.myContentList.myTitle = `No.${threadId}`;
+            this.title = `No.${threadId}`;
         };
         this.lastReplyId = '';
         this.myContentList.refresh();

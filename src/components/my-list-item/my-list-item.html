@@ -1,6 +1,60 @@
-<button ion-item no-lines [ngSwitch]="model.itemType">
+<ng-container [ngSwitch]="model.itemType">
     <ion-input *ngSwitchCase="'info'" readonly text-center value="{{model.content}}"></ion-input>
-    <ion-input *ngSwitchCase="'reply'" readonly value="{{model.content.id}}"></ion-input>
-    <ion-input *ngSwitchCase="'thread'" readonly value="{{model.content.id}}" (click)="doClick(model.content)"></ion-input>
+    <!-- <ion-input *ngSwitchCase="'reply'" readonly value="{{model.content.id}}"></ion-input> -->
+    <!-- <ion-input *ngSwitchCase="'thread'" readonly value="{{model.content.id}}" (click)="doClick(model.content)"></ion-input> -->
     <ion-input *ngSwitchDefault readonly value="error type:{{model.itemType}}"></ion-input>
-</button>
+    <button ion-item *ngSwitchCase="'thread'" (click)="doClick(model.content)">
+        <ion-item no-lines style="margin: 0;padding: 0;">
+            <span>
+                <span *ngIf="model.content.title">
+                    {{model.content.title}}
+                    <br>
+                </span>
+                <span *ngIf="model.content.now">
+                    {{model.content.now}}
+                    <br>
+                </span>
+                <span *ngIf="model.content.name">
+                    {{model.content.name}}
+                    <br>
+                </span>
+            </span>
+            <span item-end>No.{{model.content.id}}
+                <br>回复:{{model.content.replyCount}}</span>
+        </ion-item>
+        <div text-wrap [innerHTML]="model.content.content"></div>
+        <img *ngIf="model.content.img" src="{{model.content.imageThumbPath + model.content.img + model.content.ext}}" />
+    </button>
+    <button ion-item *ngSwitchCase="'reply'">
+        <ion-item no-lines style="margin: 0;padding: 0;">
+            <span>
+                <span *ngIf="model.content.title">
+                    {{model.content.title}}
+                    <br>
+                </span>
+                <span *ngIf="model.content.email">
+                    {{model.content.email}}
+                    <br>
+                </span>
+                <span *ngIf="model.content.name">
+                    {{model.content.name}}
+                    <br>
+                </span>
+                <span *ngIf="model.content.now">
+                    {{model.content.now}}
+                    <br>
+                </span>
+                <span>
+                    {{model.content.userid}}
+                    <br>
+                </span>
+
+            </span>
+            <span item-end>
+                No.{{model.content.id}}
+            </span>
+        </ion-item>
+        <div text-wrap [innerHTML]="model.content.content"></div>
+        <img *ngIf="model.content.img" src="{{model.content.imageThumbPath + model.content.img + model.content.ext}}" />
+    </button>
+</ng-container>

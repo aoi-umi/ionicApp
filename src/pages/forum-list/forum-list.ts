@@ -19,9 +19,12 @@ export class ForumListPage extends BasePage {
     list: Array<Group<ForumModel>>;
     searchText: string;
     private _list: Array<Group<ForumModel>>;
+    private onForumClick: Function;
     constructor(navParams: NavParams, private db: DatabaseProvider) {
         super(navParams.data);
+        let data = navParams.data;
         this._list = this.list = IslandConfig[this.islandCode].Groups;
+        this.onForumClick = data.onForumClick;
     }
 
     onSearchInput() {
@@ -46,6 +49,6 @@ export class ForumListPage extends BasePage {
     }
 
     doForumClick(m: ForumModel) {
-        console.log(m);
+        this.onForumClick && this.onForumClick(m);
     }
 }
